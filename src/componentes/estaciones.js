@@ -1,11 +1,35 @@
-import { useEffect } from "react"
-import { Modal, Button, Card } from 'react-bootstrap'
+import { useCallback, useEffect, useState } from "react"
+import { Modal, Card } from 'react-bootstrap'
 
 function Estaciones(props) {
 
     const estaciones = props.estaciones.stations
-    console.log(estaciones)
+    const [all_empty_slots, setAllES] = useState()
+    const [all_free_bikes, setAllFB] = useState()
 
+    const contador = useCallback(() => {
+        var estaciones_temp = estaciones
+        var all_empty_slots = 0
+        var all_free_bikes = 0
+        for (var i in estaciones_temp) {
+            all_empty_slots = all_empty_slots + estaciones_temp[i].empty_slots
+            all_free_bikes = all_free_bikes + estaciones_temp[i].free_bikes
+        }
+        setAllFB(all_free_bikes)
+        setAllES(all_empty_slots)
+    }, [estaciones])
+
+    useEffect(() => {
+        if (estaciones){
+            contador()
+        }
+    }, [estaciones, contador])
+
+    if (!estaciones){
+        return(
+            <div></div>
+        )
+    }
     return (
         <div>
             <Modal
@@ -14,21 +38,28 @@ function Estaciones(props) {
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
             >
+                <Modal.Header>
+                    <Modal.Title>
+                        Total Bicicletas Libres: {all_free_bikes}
+                        <br></br>
+                        Total Espacios Libres: {all_empty_slots}
+                    </Modal.Title>
+                </Modal.Header>
                 <Modal.Body>
                     {
                         estaciones.length === 0 ? 'No hay estaciones' : estaciones.map((estacion) => {
                             return (
                                 <div>
                                     <Card key={estacion.id}>
-                                    <Card.Body>
-                                    <h5>NOMBRE ESTACION: {estacion.name}</h5>
-                                    <h5>BICICLETAS LIBRES: {estacion.free_bikes === null ? 'Sin Info' : estacion.free_bikes}</h5>
-                                    <h5>ESPACIOS LIBRES: {estacion.empty_slots === null ? 'Sin Info' : estacion.empty_slots}</h5>
-                                    <h5>TOTAL DE ESPACIOS: {estacion.free_bikes + estacion.empty_slots}</h5>
-                                    </Card.Body>
-                                    <Card.Footer>
-                                        <h5>FECHA DE ACTUALIZACION: {estacion.timestamp}</h5>
-                                    </Card.Footer>
+                                        <Card.Body>
+                                            <h5>NOMBRE ESTACION: {estacion.name}</h5>
+                                            <h5>BICICLETAS LIBRES: {estacion.free_bikes === null ? 'Sin Info' : estacion.free_bikes}</h5>
+                                            <h5>ESPACIOS LIBRES: {estacion.empty_slots === null ? 'Sin Info' : estacion.empty_slots}</h5>
+                                            <h5>TOTAL DE ESPACIOS: {estacion.free_bikes + estacion.empty_slots}</h5>
+                                        </Card.Body>
+                                        <Card.Footer>
+                                            <h5>FECHA DE ACTUALIZACION: {estacion.timestamp}</h5>
+                                        </Card.Footer>
                                     </Card>
                                     <br></br>
                                 </div>
