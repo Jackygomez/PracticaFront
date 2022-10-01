@@ -5,7 +5,7 @@ import Networks from './componentes/networks';
 function App() {
   return (
     <div className="App">
-      <Networks></Networks>
+      <Networks></Networks> {/* RENDERIZA EL COMPONENTE NETWORKS */}
     </div>
   );
 }

@@ -4,15 +4,15 @@ import Estaciones from './estaciones'
 
 function Networks() {
 
-    const [networks, setNetworks] = useState([])
-    const [estaciones, setEstaciones] = useState([])
-    const [modalShow, setModalShow] = useState(false);
+    const [networks, setNetworks] = useState([]) /* CREA LA CONSTANTE NETWORKS DONDE SE ALMACENA LA LISTA DE NETWORKS */
+    const [estaciones, setEstaciones] = useState([]) /* CREA LA CONSTANTE DE ESTACIONES DONDE SE ALMACENA LA LISTA DETALLADA DE CADA NETWORK */
+    const [modalShow, setModalShow] = useState(false); /* CREA LA CONSTANTE MODALSHOW PARA CONTROLAR SI LA VENTANA MODAL ESTA ABIERTA O CERRADA */
 
-    useEffect(() => {
+    useEffect(() => { /* INVOCA EL METODO USEEFFECT PARA QUE CUANDO EL COMPONENTE CARGUE SE HAGA LLAMADO A LA FUNCION GETDATA */
         getData()
     }, [])
 
-    const getData = async () => {
+    const getData = async () => {  /* TRAE EL LISTADO DE NETWORKS DE LA API */
         let url = 'http://api.citybik.es/v2/networks'
         const response = await fetch(url, { method: 'GET' })
             .then(response => response.json())
@@ -20,7 +20,7 @@ function Networks() {
         setNetworks(response.networks)
     }
 
-    const getEstaciones = async (id) => {
+    const getEstaciones = async (id) => { /*TRAE LA INFO DETALLADA DE CADA UNA DE LAS NETWORKS*/
         let url = `http://api.citybik.es/v2/networks/${id}`
         const response = await fetch(url, { method: 'GET' })
             .then(response => response.json())
@@ -28,11 +28,11 @@ function Networks() {
         setEstaciones(response.network)
         setModalShow(true)
     }
-
+    /* RENDERIZA CADA UNA DE LAS NETWORKS */
     return (
         <div className='cards__container'>
             {
-                networks.map((network) => {
+                networks.map((network) => { 
                     return (
                         <div key={network.id}>
                             <center>
@@ -54,7 +54,7 @@ function Networks() {
             <Estaciones
                 estaciones={estaciones}
                 show={modalShow}
-                onHide={() => setModalShow(false)}>
+                onHide={() => setModalShow(false)}> {/* RENDERIZA AL COMPONENTE ESTACIONES PASANDOLE LOS DATOS SHOW Y ESTACIONES */}
             </Estaciones>
         </div>
     )

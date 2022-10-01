@@ -3,9 +3,9 @@ import { Modal, Card } from 'react-bootstrap'
 
 function Estaciones(props) {
 
-    const estaciones = props.estaciones.stations
-    const [all_empty_slots, setAllES] = useState()
-    const [all_free_bikes, setAllFB] = useState()
+    const estaciones = props.estaciones.stations /* SE LE ASIGNA A LA CONSTANTE ESTACIONES, EL LISTADO DE ESTACIONES QUE VIENEN DEL COMPONENTE NETWORKS */
+    const [all_empty_slots, setAllES] = useState() /* CONSTANTE PARA ALMACENAR EL TOTAL DE ESPACIOS LIBRES */
+    const [all_free_bikes, setAllFB] = useState() /* CONSTANTE PARA ALMACENAR EL TOTAL DE BICICLETAS LIBRES */
 
     const contador = useCallback(() => {
         var estaciones_temp = estaciones
@@ -17,19 +17,19 @@ function Estaciones(props) {
         }
         setAllFB(all_free_bikes)
         setAllES(all_empty_slots)
-    }, [estaciones])
+    }, [estaciones]) /*FUNCION QUE CUENTA LAS ESTACIONES Y LAS BICICLETAS LIBRES */
 
     useEffect(() => {
         if (estaciones){
             contador()
         }
-    }, [estaciones, contador])
+    }, [estaciones, contador]) /*FUNCIÓN QUE VALIDA SI YA SE CARGARON ESTACIONES, SI SÍ, LLAMA AL MEOTODO CONTADOR */
 
     if (!estaciones){
         return(
             <div></div>
         )
-    }
+    } /*SI NO HAY ESTACIONES, NO SE RENDERIZA NADA, SI SÍ, SE RENDERIZA UNA VENTANA MODAL CON EL LISTADO DE ESTACIONES */
     return (
         <div>
             <Modal
