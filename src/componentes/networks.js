@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Card, Button } from 'react-bootstrap'
+import Estaciones from './estaciones'
 
 function Networks() {
 
     const [networks, setNetworks] = useState([])
     const [estaciones, setEstaciones] = useState([])
+    const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
         getData()
@@ -16,7 +18,6 @@ function Networks() {
             .then(response => response.json())
             .catch(error => console.log(error))
         setNetworks(response.networks)
-        console.log(networks)
     }
 
     const getEstaciones = async (id) => {
@@ -25,7 +26,7 @@ function Networks() {
             .then(response => response.json())
             .catch(error => console.log(error))
         setEstaciones(response.network)
-        console.log(estaciones)
+        setModalShow(true)
     }
 
     return (
@@ -50,6 +51,11 @@ function Networks() {
                     )
                 })
             }
+            <Estaciones
+                estaciones={estaciones}
+                show={modalShow}
+                onHide={() => setModalShow(false)}>
+            </Estaciones>
         </div>
     )
 }
